@@ -1,0 +1,28 @@
+# Fichiers Systèmes
+.DS_Store
+Thumbs.db
+
+# IDE & Editeurs
+.idea/
+.vscode/
+*.swp
+*.sublime-workspace
+
+# PHP / Composer
+vendor/
+composer.lock
+
+# Configuration locale (Mots de passe, API Keys)
+# Ne jamais versionner ces fichiers !
+config/db.php
+config/config.php
+.env
+
+# Logs & Temporaire
+logs/
+tmp/
+*.log
+
+# Uploads (si on gère des images uploadées)
+uploads/
+!uploads/.gitkeep
