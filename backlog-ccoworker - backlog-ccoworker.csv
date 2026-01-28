@@ -1,0 +1,18 @@
+Issue Type,Epic Name,Summary,Description,Priority,Story Points
+Story,Gestion des espaces,Liste des espaces,"En tant qu’admin et user, je veux voir la liste des espaces",High,2
+Story,Gestion des espaces,Description des espaces,"En tant qu’admin et user, je veux voir le détail d'un espace (équipement, surface,...)",,
+Story,Gestion des espaces,Ajouter un espace,"En tant qu’admin, je veux ajouter un espace",High,3
+Story,Gestion des espaces,Modifier un espace,"En tant qu’admin, je veux modifier un espace",Medium,3
+Story,Gestion des espaces,Supprimer un espace,"En tant qu’admin, je veux supprimer un espace",Low,2
+Story,Gestion des réservations,Créer une réservation,"En tant qu’admin et user, je veux créer une réservation",High,5
+Story,Gestion des réservations,Modifier une réservation,"En tant qu’admin et user, je veux modifier une réservation",Medium,3
+Story,Gestion des réservations,Supprimer une réservation,"En tant qu’admin et user, je veux supprimer une réservation",Medium,2
+Story,Gestion des réservations,Empêcher les conflits,Empêcher deux réservations sur un même créneau,High,8
+Story,Administration,Planning hebdomadaire,"En tant qu'admin, je veux voir les réservations par jour et heure",High,5
+Story,Administration,Tableau de bord,"En tant qu'admin, je veux voir rapidement les espaces libres et occupés",Medium,3
+Story,Gestion des uilisateurs,Créer un utilisateur,"En tant qu’admin, je veux ajouter un utilisateur",,
+Story,Gestion des uilisateurs,Modifier un utilisateur,"En tant qu’admin, je veux modifier un utilisateur",,
+Story,Gestion des uilisateurs,Supprimer un utilisateur,"En tant qu’admin, je veux supprimer un utilisateur ",,
+,Gestion des uilisateurs,Supprimer son compte,"En tant qu’user, je veux demander la suppression d'un utilisateur ",,
+Story,Gestion des uilisateurs,Lister les utilisateurs,"En tant qu’admin, je veux lister les utilisateurs",,
+Story,Gestion des uilisateurs,Afficher le profil utilisateur,"En tant qu’admin, je veux afficher le profil utilisateur",,
