@@ -1,0 +1,126 @@
+# Modélisation MERISE - C'Coworker
+
+Ce document présente les 3 niveaux de modélisation pour la base de données du projet.
+
+## 1. Modèle Conceptuel des Données (MCD)
+
+Le MCD représente les entités et leurs relations, sans se soucier de la technique.
+Nous avons choisi de modéliser la **Réservation** comme une Entité à part entière (et non une association n-n) car elle possède son propre identifiant unique et son cycle de vie (création, annulation).
+
+```mermaid
+erDiagram
+    UTILISATEUR {
+        int id
+        string nom
+        string prenom
+        string email
+        string password
+        string role
+    }
+
+    ESPACE {
+        int id
+        string nom
+        int capacite
+        string type
+        string equipements
+    }
+
+    RESERVATION {
+        int id
+        datetime date_debut
+        datetime date_fin
+    }
+
+    UTILISATEUR ||--o{ RESERVATION : "Effectuer (0,n)"
+    ESPACE ||--o{ RESERVATION : "Concerner (0,n)"
+```
+
+**Règles de Gestion :**
+1.  Un utilisateur peut effectuer plusieurs réservations (`0,n`).
+2.  Une réservation est effectuée par un seul utilisateur (`1,1`).
+3.  Un espace peut faire l'objet de plusieurs réservations (`0,n`).
+4.  Une réservation concerne un seul espace (`1,1`).
+
+---
+
+## 2. Modèle Logique des Données (MLD)
+
+Le MLD traduit le MCD en tables relationnelles. Les relations `1,n` deviennent des clés étrangères.
+
+*   **UTILISATEUR** (<u>id</u>, nom, prenom, email, password, role)
+*   **ESPACE** (<u>id</u>, nom, capacite, type, equipements)
+*   **RESERVATION** (<u>id</u>, date_debut, date_fin, #user_id, #space_id)
+
+*Légende : <u>Souligné</u> = Clé Primaire (PK), #Précédé de dièse = Clé Étrangère (FK).*
+
+```mermaid
+classDiagram
+    class UTILISATEUR {
+        +id : INT (PK)
+        +nom : VARCHAR
+        +prenom : VARCHAR
+        +email : VARCHAR
+        +password : VARCHAR
+        +role : VARCHAR
+    }
+
+    class ESPACE {
+        +id : INT (PK)
+        +nom : VARCHAR
+        +capacite : INT
+        +type : VARCHAR
+        +equipements : TEXT
+    }
+
+    class RESERVATION {
+        +id : INT (PK)
+        +date_debut : DATETIME
+        +date_fin : DATETIME
+        +user_id : INT (FK)
+        +space_id : INT (FK)
+    }
+
+    UTILISATEUR "1" --> "0..*" RESERVATION : FK_user_id
+    ESPACE "1" --> "0..*" RESERVATION : FK_space_id
+```
+
+---
+
+## 3. Modèle Physique des Données (MPD)
+
+Le MPD est la traduction SQL pour MySQL (déjà implémenté dans [database.sql](file:///c:/code/C_Coworker/app/sql/database.sql)).
+
+```mermaid
+erDiagram
+    users {
+        INT id PK "AUTO_INCREMENT"
+        VARCHAR(100) firstname
+        VARCHAR(100) lastname
+        VARCHAR(150) email "UNIQUE"
+        VARCHAR(255) password
+        ENUM role "'admin','user'"
+        TIMESTAMP created_at
+    }
+
+    spaces {
+        INT id PK "AUTO_INCREMENT"
+        VARCHAR(100) name
+        INT capacity
+        ENUM type "'bureau','reunion','open-space'"
+        TEXT equipment "NULL"
+        TIMESTAMP created_at
+    }
+
+    reservations {
+        INT id PK "AUTO_INCREMENT"
+        INT space_id FK
+        INT user_id FK
+        DATETIME start_time
+        DATETIME end_time
+        TIMESTAMP created_at
+    }
+
+    users ||--o{ reservations : "Foreign Key"
+    spaces ||--o{ reservations : "Foreign Key"
+```

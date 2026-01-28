@@ -1,0 +1,35 @@
+MODÈLE CONCEPTUEL DES DONNÉES (MCD) - C'COWORKER
+
+ENTITÉS :
+
+1. UTILISATEUR
+   - id (Identifiant unique)
+   - nom
+   - prenom
+   - email
+   - password
+   - role (admin ou user)
+
+2. ESPACE
+   - id (Identifiant unique)
+   - nom
+   - capacite
+   - type (bureau, reunion, open-space)
+   - equipements
+
+3. RESERVATION
+   - id (Identifiant unique)
+   - date_debut
+   - date_fin
+
+ASSOCIATIONS :
+
+- "Effectuer"
+  - Entre UTILISATEUR et RESERVATION
+  - Cardinalités : UTILISATEUR (0,n) --- (1,1) RESERVATION
+  - Signification : Un utilisateur effectue 0 ou plusieurs réservations. Une réservation est effectuée par exactement un utilisateur.
+
+- "Concerner"
+  - Entre ESPACE et RESERVATION
+  - Cardinalités : ESPACE (0,n) --- (1,1) RESERVATION
+  - Signification : Un espace peut être concerné par 0 ou plusieurs réservations. Une réservation concerne exactement un espace.

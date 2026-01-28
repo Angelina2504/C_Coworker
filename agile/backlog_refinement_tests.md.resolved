@@ -1,0 +1,79 @@
+# Backlog Refinement - Plan de Tests & Critères d'Acceptation
+**Source** : [backlog-ccoworker.csv](file:///c:/code/C_Coworker/backlog-ccoworker%20-%20backlog-ccoworker.csv)
+**Objectif** : Guide de validation pour les Tests (Manuels ou Automatisés).
+
+---
+
+## 🏢 Épic : Gestion des Espaces
+
+### US-01 : Liste des espaces
+**Critères d'Acceptation :**
+- [ ] La liste affiche tous les espaces actifs.
+- [ ] Chaque ligne montre : Nom, Type, Capacité.
+- [ ] Si vide, affiche "Aucun espace disponible".
+
+### US-03 : Ajouter un espace
+**Scénario Nominal :**
+1.  Admin clique sur "Ajouter".
+2.  Remplit : Nom="Salle A", Capacité=10, Type="Réunion".
+3.  Soumet.
+4.  **Résultat** : Redirection liste + on voit "Salle A".
+
+**Tests d'Erreur :**
+- [ ] Tenter de créer sans Nom -> Erreur "Le nom est requis".
+- [ ] Tenter de mettre une capacité négative -> Erreur.
+
+### US-05 : Supprimer un espace
+**Règle Métier :**
+-   Impossible de supprimer si des réservations futures existent.
+
+**Test de vérification :**
+1.  Prendre un espace avec une réservation demain.
+2.  Cliquer "Supprimer".
+3.  **Attendu** : Message d'erreur "Impossible : Espace réservé".
+4.  Supprimer la réservation.
+5.  Re-cliquer "Supprimer".
+6.  **Attendu** : Espace supprimé.
+
+---
+
+## 📅 Épic : Gestion des Réservations
+
+### US-06 : Créer une réservation
+**Scénario Nominal :**
+1.  User choisit "Salle A".
+2.  Date = Demain, 10h00 à 12h00.
+3.  Valide.
+4.  **Résultat** : Réservation enregistrée.
+
+### US-09 : Empêcher les conflits (CRITIQUE)
+**Test de Chevauchement :**
+-   **Contexte** : Une réservation existe déjà de **14h00 à 16h00** sur Salle A.
+-   **Cas 1 (Dedans)** : Tenter de réserver 14h30 - 15h00 -> **REFUSÉ**.
+-   **Cas 2 (Chevauchement début)** : Tenter 13h00 - 14h30 -> **REFUSÉ**.
+-   **Cas 3 (Chevauchement fin)** : Tenter 15h30 - 17h00 -> **REFUSÉ**.
+-   **Cas 4 (Englobant)** : Tenter 13h00 - 17h00 -> **REFUSÉ**.
+-   **Cas 5 (Collé avant)** : Tenter 12h00 - 14h00 -> **ACCEPTÉ**.
+-   **Cas 6 (Collé après)** : Tenter 16h00 - 18h00 -> **ACCEPTÉ**.
+
+### US-07 : Modifier une réservation
+**Test de Disponibilité :**
+-   Si je déplace ma réservation sur un créneau déjà pris -> Erreur.
+-   Si je déplace sur un créneau libre -> Succès.
+
+---
+
+## 👥 Épic : Gestion des Utilisateurs & Auth
+
+### Connexion
+**Tests :**
+- [ ] Email inconnu -> Erreur "Identifiants incorrects".
+- [ ] Mauvais mot de passe -> Erreur "Identifiants incorrects".
+- [ ] Bon login/mdp -> Redirection Dashboard.
+
+### US-16 : Supprimer son compte
+**Règle :**
+-   Un utilisateur peut supprimer son compte.
+-   **Question métier** : Que deviennent ses réservations futures ?
+    -   *Hypothèse Agilité* : Elles sont annulées automatiquement.
+-   **Test** : Supprimer user -> Vérifier que ses réservations n'apparaissent plus dans le planning (ou sont marquées "Annulées").

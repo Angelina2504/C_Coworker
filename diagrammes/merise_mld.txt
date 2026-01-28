@@ -1,0 +1,27 @@
+MODÈLE LOGIQUE DES DONNÉES (MLD) - C'COWORKER
+
+TRADUCTION RELATIONNELLE :
+
+1. Table UTILISATEUR
+   - id (PK) : Entier
+   - nom : Chaîne
+   - prenom : Chaîne
+   - email : Chaîne
+   - password : Chaîne
+   - role : Chaîne
+
+2. Table ESPACE
+   - id (PK) : Entier
+   - nom : Chaîne
+   - capacite : Entier
+   - type : Chaîne
+   - equipements : Texte
+
+3. Table RESERVATION
+   - id (PK) : Entier
+   - date_debut : Date/Heure
+   - date_fin : Date/Heure
+   - user_id (FK) -> Référence UTILISATEUR(id)
+   - space_id (FK) -> Référence ESPACE(id)
+
+* Légende : PK = Primary Key (Clé Primaire), FK = Foreign Key (Clé Étrangère)
