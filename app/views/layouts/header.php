@@ -32,4 +32,33 @@
         </div>
     </nav>
 
+    <?php
+    // Démarrer la session si pas déjà fait
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Affichage des messages flash
+    if (isset($_SESSION['flash_success'])): ?>
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Succès !</strong>
+                <?php echo htmlspecialchars($_SESSION['flash_success']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <?php unset($_SESSION['flash_success']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['flash_error'])): ?>
+        <div class="container mt-3">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Erreur !</strong>
+                <?php echo htmlspecialchars($_SESSION['flash_error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <?php unset($_SESSION['flash_error']); ?>
+    <?php endif; ?>
+
     <div class="container main-content">

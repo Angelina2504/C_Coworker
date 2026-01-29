@@ -22,4 +22,63 @@ class SpaceController
         // Inclusion de la vue
         require_once __DIR__ . '/../views/spaces/index.php';
     }
+
+    /**
+     * Action : Afficher le formulaire de création / Traiter la soumission
+     * Route : ?page=spaces-create
+     */
+    public function create()
+    {
+        // Initialisation des variables pour la vue
+        $errors = [];
+        $success = false;
+
+        // Traitement du formulaire si POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Récupération et nettoyage des données
+            $data = [
+                'name' => $_POST['name'] ?? '',
+                'capacity' => $_POST['capacity'] ?? '',
+                'type' => $_POST['type'] ?? '',
+                'equipment' => $_POST['equipment'] ?? ''
+            ];
+
+            // Validation côté serveur
+            if (empty($data['name'])) {
+                $errors[] = "Le nom de l'espace est obligatoire.";
+            }
+
+            if (empty($data['capacity']) || !is_numeric($data['capacity']) || $data['capacity'] <= 0) {
+                $errors[] = "La capacité doit être un nombre supérieur à 0.";
+            }
+
+            if (empty($data['type']) || !in_array($data['type'], ['bureau', 'reunion', 'open-space'])) {
+                $errors[] = "Le type d'espace est invalide.";
+            }
+
+            // Si pas d'erreurs, créer l'espace
+            if (empty($errors)) {
+                $spaceId = Space::create($data);
+
+                if ($spaceId) {
+                    // Démarrer la session si pas déjà fait
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
+                    // Message flash de succès
+                    $_SESSION['flash_success'] = "L'espace \"{$data['name']}\" a été créé avec succès.";
+
+                    // Redirection vers la liste
+                    header('Location: index.php?page=spaces');
+                    exit;
+                } else {
+                    $errors[] = "Une erreur est survenue lors de la création de l'espace.";
+                }
+            }
+        }
+
+        // Affichage du formulaire
+        require_once __DIR__ . '/../views/spaces/create.php';
+    }
 }

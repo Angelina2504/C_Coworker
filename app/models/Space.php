@@ -33,4 +33,52 @@ class Space
             return [];
         }
     }
+
+    /**
+     * Crée un nouvel espace dans la base de données
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param array $data Données de l'espace (name, capacity, type, equipment)
+     * @return int|false ID de l'espace créé ou false en cas d'erreur
+     */
+    public static function create($data)
+    {
+        global $pdo;
+
+        // Validation des données
+        if (empty($data['name']) || empty($data['type']) || empty($data['capacity'])) {
+            return false;
+        }
+
+        // Validation du type
+        $validTypes = ['bureau', 'reunion', 'open-space'];
+        if (!in_array($data['type'], $validTypes)) {
+            return false;
+        }
+
+        // Validation de la capacité
+        if (!is_numeric($data['capacity']) || $data['capacity'] <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                INSERT INTO spaces (name, capacity, type, equipment, created_at) 
+                VALUES (:name, :capacity, :type, :equipment, NOW())
+            ");
+
+            $stmt->execute([
+                ':name' => trim($data['name']),
+                ':capacity' => (int) $data['capacity'],
+                ':type' => $data['type'],
+                ':equipment' => trim($data['equipment'] ?? '')
+            ]);
+
+            return $pdo->lastInsertId();
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la création d'un espace : " . $e->getMessage());
+            return false;
+        }
+    }
 }
