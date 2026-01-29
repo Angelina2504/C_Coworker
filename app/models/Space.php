@@ -115,4 +115,63 @@ class Space
             return null;
         }
     }
+
+    /**
+     * Met à jour un espace existant dans la base de données
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de l'espace à modifier
+     * @param array $data Nouvelles données de l'espace
+     * @return bool True si succès, false sinon
+     */
+    public static function update($id, $data)
+    {
+        global $pdo;
+
+        // Validation de l'ID
+        if (!is_numeric($id) || $id <= 0) {
+            return false;
+        }
+
+        // Validation des données
+        if (empty($data['name']) || empty($data['type']) || empty($data['capacity'])) {
+            return false;
+        }
+
+        // Validation du type
+        $validTypes = ['bureau', 'reunion', 'open-space'];
+        if (!in_array($data['type'], $validTypes)) {
+            return false;
+        }
+
+        // Validation de la capacité
+        if (!is_numeric($data['capacity']) || $data['capacity'] <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                UPDATE spaces 
+                SET name = :name, 
+                    capacity = :capacity, 
+                    type = :type, 
+                    equipment = :equipment
+                WHERE id = :id
+            ");
+
+            $result = $stmt->execute([
+                ':id' => (int) $id,
+                ':name' => trim($data['name']),
+                ':capacity' => (int) $data['capacity'],
+                ':type' => $data['type'],
+                ':equipment' => trim($data['equipment'] ?? '')
+            ]);
+
+            return $result;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la mise à jour de l'espace #$id : " . $e->getMessage());
+            return false;
+        }
+    }
 }
