@@ -81,4 +81,34 @@ class SpaceController
         // Affichage du formulaire
         require_once __DIR__ . '/../views/spaces/create.php';
     }
+
+    /**
+     * Action : Afficher les détails d'un espace
+     * Route : ?page=spaces-show&id=X
+     */
+    public function show()
+    {
+        // Récupération et validation de l'ID
+        $id = $_GET['id'] ?? null;
+
+        if (!$id || !is_numeric($id) || $id <= 0) {
+            // ID invalide : afficher une erreur
+            $error = "Identifiant d'espace invalide.";
+            require_once __DIR__ . '/../views/errors/404.php';
+            return;
+        }
+
+        // Récupération de l'espace
+        $space = Space::findById($id);
+
+        if (!$space) {
+            // Espace non trouvé
+            $error = "L'espace demandé n'existe pas.";
+            require_once __DIR__ . '/../views/errors/404.php';
+            return;
+        }
+
+        // Affichage de la vue détail
+        require_once __DIR__ . '/../views/spaces/show.php';
+    }
 }

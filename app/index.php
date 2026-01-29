@@ -34,6 +34,12 @@ switch ($page) {
         $controller->create();
         break;
 
+    case 'spaces-show':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->show();
+        break;
+
     case 'login':
         // TODO: Appeler AuthController->login()
         echo '<h2>Connexion (À implémenter)</h2>';

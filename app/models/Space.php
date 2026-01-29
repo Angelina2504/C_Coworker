@@ -81,4 +81,38 @@ class Space
             return false;
         }
     }
+
+    /**
+     * Récupère un espace par son ID
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de l'espace
+     * @return array|null Données de l'espace ou null si non trouvé
+     */
+    public static function findById($id)
+    {
+        global $pdo;
+
+        // Validation de l'ID
+        if (!is_numeric($id) || $id <= 0) {
+            return null;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT id, name, capacity, type, equipment, created_at 
+                FROM spaces 
+                WHERE id = :id
+            ");
+
+            $stmt->execute([':id' => (int) $id]);
+            $space = $stmt->fetch();
+
+            return $space ?: null;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la récupération de l'espace #$id : " . $e->getMessage());
+            return null;
+        }
+    }
 }
