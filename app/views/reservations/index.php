@@ -83,10 +83,12 @@
                                 <?php echo $end->format('d/m/Y H:i'); ?>
                             </td>
                             <td>
+                            <td>
                                 <?php
                                 $parts = [];
-                                if ($interval->d > 0)
-                                    $parts[] = $interval->d . 'j';
+                                // Utiliser 'days' pour le nombre total de jours (plus fiable que 'd')
+                                if ($interval->days > 0)
+                                    $parts[] = $interval->days . 'j';
                                 if ($interval->h > 0)
                                     $parts[] = $interval->h . 'h';
                                 if ($interval->i > 0)
