@@ -102,15 +102,22 @@
 
                 <!-- Footer avec actions -->
                 <div class="card-footer bg-light">
-                    <div class="d-flex justify-content-between">
-                        <a href="index.php?page=spaces-edit&id=<?php echo $space['id']; ?>" class="btn btn-warning">
-                            <i class="bi bi-pencil-square"></i> Modifier cet espace
-                        </a>
-                        <a href="index.php?page=spaces-delete&id=<?php echo $space['id']; ?>" class="btn btn-danger"
-                            onclick="return confirm('Voulez-vous vraiment supprimer cet espace ? Cette action est irréversible.');">
-                            <i class="bi bi-trash"></i> Supprimer
-                        </a>
-                    </div>
+                    <?php if (AuthHelper::isAdmin()): ?>
+                        <div class="d-flex justify-content-between">
+                            <a href="index.php?page=spaces-edit&id=<?php echo $space['id']; ?>" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i> Modifier cet espace
+                            </a>
+                            <a href="index.php?page=spaces-delete&id=<?php echo $space['id']; ?>" class="btn btn-danger"
+                                onclick="return confirm('Voulez-vous vraiment supprimer cet espace ? Cette action est irréversible.');">
+                                <i class="bi bi-trash"></i> Supprimer
+                            </a>
+                        </div>
+                    <?php else: ?>
+                        <!-- Footer vide ou message pour les utilisateurs -->
+                        <div class="text-end text-muted fst-italic">
+                            <small>Pour modifier, contactez un administrateur.</small>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

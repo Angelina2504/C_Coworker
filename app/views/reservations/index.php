@@ -83,7 +83,6 @@
                                 <?php echo $end->format('d/m/Y H:i'); ?>
                             </td>
                             <td>
-                            <td>
                                 <?php
                                 $parts = [];
                                 // Utiliser 'days' pour le nombre total de jours (plus fiable que 'd')
