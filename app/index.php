@@ -90,6 +90,12 @@ switch ($page) {
         $controller->delete();
         break;
 
+    case 'dashboard':
+        require_once 'controllers/DashboardController.php';
+        $controller = new DashboardController();
+        $controller->index();
+        break;
+
     default:
         echo '<div class="alert alert-danger">Page introuvable (404)</div>';
 }
