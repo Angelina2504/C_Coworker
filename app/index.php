@@ -1,8 +1,10 @@
 <?php
 // Point d'entrée de l'application
 
-// 1. Inclusion de la config
+// 1. Inclusion de la config et des fichiers essentiels
 require_once 'config/db.php';
+require_once 'models/Space.php';
+require_once 'helpers/AuthHelper.php';
 
 // 2. Gestion simple du routing
 $page = $_GET['page'] ?? 'home';
@@ -53,8 +55,45 @@ switch ($page) {
         break;
 
     case 'login':
-        // TODO: Appeler AuthController->login()
-        echo '<h2>Connexion (À implémenter)</h2>';
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->login();
+        break;
+
+    case 'logout':
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->logout();
+        break;
+
+    case 'reservations':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->index();
+        break;
+
+    case 'reservations-create':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->create();
+        break;
+
+    case 'reservations-edit':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->edit();
+        break;
+
+    case 'reservations-delete':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->delete();
+        break;
+
+    case 'dashboard':
+        require_once 'controllers/DashboardController.php';
+        $controller = new DashboardController();
+        $controller->index();
         break;
 
     default:

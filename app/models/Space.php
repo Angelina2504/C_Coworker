@@ -15,7 +15,7 @@ class Space
      */
     public static function findAll()
     {
-        global $pdo;
+        global $pdo;  // Je sais, c'est pas clean, mais temporaire
 
         try {
             $stmt = $pdo->prepare("
@@ -235,6 +235,25 @@ class Space
         } catch (PDOException $e) {
             error_log("Erreur lors de la suppression de l'espace #$id : " . $e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Compte le nombre total d'espaces
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @return int Nombre d'espaces
+     */
+    public static function countAll()
+    {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->query("SELECT COUNT(*) as count FROM spaces");
+            $result = $stmt->fetch();
+            return (int) $result['count'];
+        } catch (PDOException $e) {
+            return 0;
         }
     }
 }
