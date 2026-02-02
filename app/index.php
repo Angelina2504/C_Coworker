@@ -1,4 +1,7 @@
 <?php
+// Configuration du fuseau horaire
+date_default_timezone_set('Europe/Paris');
+
 // Point d'entrée de l'application
 
 // 1. Inclusion de la config et des fichiers essentiels
@@ -22,6 +25,18 @@ switch ($page) {
         echo '<a class="btn btn-primary btn-lg" href="index.php?page=spaces">Voir les espaces</a>';
         echo '</div>';
         echo '</div>';
+        break;
+
+    case 'dashboard':
+        require_once 'controllers/DashboardController.php';
+        $controller = new DashboardController();
+        $controller->index();
+        break;
+
+    case 'planning':
+        require_once 'controllers/PlanningController.php';
+        $controller = new PlanningController();
+        $controller->index();
         break;
 
     case 'spaces':
